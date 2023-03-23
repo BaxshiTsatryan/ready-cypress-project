@@ -1,4 +1,4 @@
-const API_URL = '';
+export const API_URL = 'https://automationexercise.com/api/';
 
 export const METHODS = {
     DELETE: 'DELETE',

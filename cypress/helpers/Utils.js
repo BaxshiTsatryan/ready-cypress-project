@@ -1,3 +1,4 @@
+// TODO move all these functions to Commands
 export function checkText(selector, expectedText) {
     cy.get(selector, {timeout: 6000}).should('have.text', expectedText);
 }
