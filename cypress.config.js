@@ -11,5 +11,8 @@ module.exports = defineConfig({
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     screenshotOnRunFailure: false,
     video: false,
+    setupNodeEvents(on, config) {
+      require('cypress-terminal-report/src/installLogsPrinter')(on);
+    },
   },
 });

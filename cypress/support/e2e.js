@@ -15,6 +15,9 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+import 'cypress-plugin-stripe-elements';
+import 'cypress-if';
+require('cypress-terminal-report/src/installLogsCollector')();
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
