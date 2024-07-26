@@ -90,6 +90,10 @@ Cypress.Commands.add('setLocalStorage', ({ keyName, value }) => {
     localStorage.setItem(keyName, JSON.stringify(value));
 });
 
+Cypress.Commands.add('forceClick', selector => {
+    cy.get(selector).click({ force: true });
+});
+
 // Design
 
 Cypress.Commands.add('checkFontFamily', (selector, font) => {
