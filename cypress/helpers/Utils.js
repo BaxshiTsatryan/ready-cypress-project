@@ -1,3 +1,5 @@
+// Check also commands.js
+
 export function getText(selector) {
     return new Promise(resolve => {
         cy.get(selector)
@@ -64,76 +66,10 @@ export function checkPageSpeed() {
     });
 }
 
-export function requestSecurityScanner(requestUrl) {
-    cy.request(requestUrl).then(response => {
-        expect(response.status).to.eq(200);
-
-        expect(response.body).to.not.include('/admin');
-        expect(response.body).to.not.include('/.env');
-        expect(response.body).to.not.include('/.git');
-        expect(response.body).to.not.include('/wp-admin');
-
-        expect(response.body).to.not.include('Index of /');
-        expect(response.body).to.not.include('<a href="../">../</a>');
-    });
-}
-
-export function scraper() {
-    cy.get('a').then($links => {
-        for (let i = 0; i < $links.length; i++) {
-            const title = $links[i].getAttribute('title');
-            if (title) {
-                cy.log(title);
-            }
-        }
-    });
-}
-
-export function requestsCountLessThan10(url) {
-    cy.intercept('GET', '**').as('getApi');
-    cy.visit(url);
-    cy.wait('@getApi')
-        .its('response.body')
-        .then(body => {
-            expect(body).to.have.length.lessThan(10);
-        });
-}
-
 export function pageTotalSizeScanner() {
     cy.window().then(win => {
         const totalSize = win.performance.getEntriesByType('resource').reduce((acc, curr) => acc + curr.transferSize, 0);
         expect(totalSize).to.be.lessThan(1000000);
-    });
-}
-
-export function corsScanner(url) {
-    const unauthorizedMethods = ['POST', 'PUT', 'DELETE'];
-
-    unauthorizedMethods.forEach(method => {
-        cy.request({
-            method: method,
-            url: url,
-            failOnStatusCode: false,
-        }).then(response => {
-            if (response.status === 405) {
-                cy.log(`CORS policy blocks unauthorized ${method} method`);
-            } else if (response.status === 200) {
-                cy.log(`CORS policy allows ${method} method`);
-            } else {
-                cy.log(`Cannot access ${url} with ${method} method`);
-            }
-        });
-    });
-}
-
-export function clickJackingScanner() {
-    cy.get('body').then(body => {
-        if (body.find('iframe').length > 0) {
-            cy.log('The website allows loading in an iframe, which may be a Clickjacking vulnerability');
-            return false;
-        } else {
-            cy.log('The website does not allow loading in an iframe, which is good for security');
-        }
     });
 }
 

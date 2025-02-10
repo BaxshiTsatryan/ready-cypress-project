@@ -1,0 +1,22 @@
+name: End-to-end tests
+on:
+  push:
+  repository_dispatch:
+    types: [cypress-run]
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    runs-on: self-hosted
+    if: "!contains(.github.event.head_commit.message, 'skip ci')"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cypress run
+        uses: cypress-io/.github-action@v4
+        with:
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
