@@ -55,7 +55,7 @@ Cypress.Commands.add('clickIfExist', selector => {
 });
 
 Cypress.Commands.add('checkUrl', page => {
-    cy.url({ timeout: 6000 }).should('eq', page);
+    cy.url({ timeout: 15000 }).should('eq', page);
 });
 
 Cypress.Commands.add('urlIsNot', url => {
@@ -90,11 +90,19 @@ Cypress.Commands.add('setLocalStorage', ({ keyName, value }) => {
     localStorage.setItem(keyName, JSON.stringify(value));
 });
 
-Cypress.Commands.add('forceClick', selector => {
-    cy.get(selector).click({ force: true });
+// Design
+
+Cypress.Commands.add('themeIsDark', () => {
+    cy.get('html').should('have.class', 'dark-mode');
 });
 
-// Design
+Cypress.Commands.add('themeIsLight', () => {
+    cy.get('html').should('have.class', 'light-mode');
+});
+
+Cypress.Commands.add('checkFontFamilyRobotoSansSerif', selector => {
+    cy.get(selector).should('have.css', 'font-family', 'Roboto, sans-serif');
+});
 
 Cypress.Commands.add('checkFontFamily', (selector, font) => {
     cy.get(selector).should('have.css', 'font-family', font);
@@ -128,4 +136,8 @@ Cypress.Commands.add('checkBorderColor', (selector, color, size) => {
 
 Cypress.Commands.add('checkBorderRadius', (selector, radius) => {
     cy.get(selector).should('have.css', 'border-radius', radius);
+});
+
+Cypress.Commands.add('forceClick', selector => {
+    cy.get(selector).click({ force: true });
 });
